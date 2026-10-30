@@ -32,3 +32,4 @@ def health_check():
 def reset_database():
     sistema_controller.resetar_banco(request.headers.get("X-Admin-Token"))
     return jsonify({"mensagem": "Banco de dados resetado", "sucesso": True}), 200
+

@@ -21,3 +21,4 @@ def relatorio_vendas():
         "pedidos_cancelados": totais["cancelados"],
         "ticket_medio": round(faturamento / total_pedidos, 2) if total_pedidos > 0 else 0,
     }
+

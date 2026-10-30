@@ -327,3 +327,4 @@ Confirme com grep que o símbolo não é usado antes de remover (inclusive em sc
 1. PB-01 → 2. PB-14 (APIs) → 3. PB-03 (estrutura) → 4. PB-02/PB-04/PB-05 (segurança no model)
 → 5. PB-10/PB-08 (performance/integridade) → 6. PB-06/PB-12/PB-13 (controllers) → 7. PB-11 (erros)
 → 8. PB-07/PB-09 (estado/async) → 9. PB-15..18 (limpeza) → 10. validação.
+

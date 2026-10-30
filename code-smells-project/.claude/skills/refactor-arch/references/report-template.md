@@ -50,3 +50,4 @@ Phase 2 complete. Proceed with refactoring (Phase 3)? [y/n]
 6. O relatório termina sempre com a pergunta de confirmação; a skill **para** até receber a resposta.
 7. Ao salvar em `reports/audit-project-N.md`, salve o relatório completo (sem a linha de confirmação é aceitável,
    mas mantenha a estrutura).
+

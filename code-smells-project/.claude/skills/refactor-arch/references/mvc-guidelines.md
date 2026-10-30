@@ -69,3 +69,4 @@ queries das rotas para models/repositórios. Não renomeie por renomear.
 - [ ] Entry point claro (composition root)
 - [ ] Aplicação inicia sem erros
 - [ ] Endpoints originais respondem como antes (exceto correções de segurança documentadas)
+

@@ -23,3 +23,4 @@ def resetar_banco(token):
         raise ForbiddenError("Acesso negado")
     sistema_model.resetar()
     logger.warning("Banco de dados resetado via rota administrativa")
+

@@ -122,3 +122,4 @@ O catálogo cobre 18 anti-patterns: 5 CRITICAL, 4 HIGH, 5 MEDIUM (incluindo APIs
 - Custo moderado de performance/padronização → MEDIUM.
 - Só estética/legibilidade → LOW.
 - Em projetos já em camadas, não reporte "God Module" se não existir; reporte as violações reais (AP-06 etc.).
+

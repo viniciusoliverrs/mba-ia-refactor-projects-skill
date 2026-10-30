@@ -84,3 +84,4 @@ def pesquisar(args):
         preco_min=_converter_preco(args.get("preco_min"), "preco_min"),
         preco_max=_converter_preco(args.get("preco_max"), "preco_max"),
     )
+

@@ -82,3 +82,4 @@ def init_db():
             [(nome, email, generate_password_hash(senha), tipo) for nome, email, senha, tipo in USUARIOS_SEED],
         )
         db.commit()
+

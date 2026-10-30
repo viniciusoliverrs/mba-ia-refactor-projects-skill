@@ -102,3 +102,4 @@ def atualizar_status(pedido_id, novo_status, devolver_estoque=False):
     except Exception:
         db.rollback()
         raise
+

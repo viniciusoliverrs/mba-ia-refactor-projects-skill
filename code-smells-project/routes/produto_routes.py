@@ -37,3 +37,4 @@ def atualizar_produto(produto_id):
 def deletar_produto(produto_id):
     produto_controller.deletar(produto_id)
     return jsonify({"sucesso": True, "mensagem": "Produto deletado"}), 200
+

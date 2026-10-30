@@ -16,3 +16,4 @@ def resetar():
     for tabela in ("itens_pedido", "pedidos", "produtos", "usuarios"):
         db.execute(f"DELETE FROM {tabela}")
     db.commit()
+

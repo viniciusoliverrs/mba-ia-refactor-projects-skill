@@ -12,3 +12,4 @@ class Settings:
     # Token exigido (header X-Admin-Token) para rotas administrativas; vazio = rotas desabilitadas
     ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "")
     VERSAO = "1.0.0"
+

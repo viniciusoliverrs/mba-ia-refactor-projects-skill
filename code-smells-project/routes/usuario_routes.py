@@ -25,3 +25,4 @@ def criar_usuario():
 def login():
     usuario = usuario_controller.login(request.get_json(silent=True))
     return jsonify({"dados": usuario, "sucesso": True, "mensagem": "Login OK"}), 200
+

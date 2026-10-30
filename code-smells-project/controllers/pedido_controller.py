@@ -62,3 +62,4 @@ def atualizar_status(pedido_id, dados):
     devolver_estoque = novo_status == "cancelado" and pedido["status"] != "cancelado"
     pedido_model.atualizar_status(pedido_id, novo_status, devolver_estoque=devolver_estoque)
     notification_service.status_alterado(pedido_id, novo_status)
+

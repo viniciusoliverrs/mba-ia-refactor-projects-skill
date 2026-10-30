@@ -14,3 +14,4 @@ def obter_totais():
         """
     ).fetchone()
     return dict(row)
+

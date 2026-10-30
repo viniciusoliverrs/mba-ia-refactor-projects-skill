@@ -66,3 +66,4 @@ def login(dados):
             }
     logger.warning("Login falhou para o email informado")
     raise AuthError("Email ou senha inválidos")
+

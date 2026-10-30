@@ -141,3 +141,4 @@ Deprecated APIs: none detected (Flask 3.x / sqlite3 sem uso de APIs obsoletas; o
 Phase 2 complete. Proceed with refactoring (Phase 3)? [y/n]
 > y   (confirmado pelo usuário ao aprovar o plano de execução)
 ```
+

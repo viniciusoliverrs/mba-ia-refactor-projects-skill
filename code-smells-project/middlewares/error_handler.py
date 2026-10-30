@@ -21,3 +21,4 @@ def register_error_handlers(app):
     def handle_unexpected_error(error):
         logger.exception("Erro inesperado: %s", error)
         return jsonify({"erro": "Erro interno do servidor", "sucesso": False}), 500
+

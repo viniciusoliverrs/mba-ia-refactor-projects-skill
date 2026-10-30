@@ -57,3 +57,4 @@ def pesquisar(termo=None, categoria=None, preco_min=None, preco_max=None):
     where = " AND ".join(condicoes) if condicoes else "1=1"
     rows = get_db().execute(f"SELECT {COLUNAS} FROM produtos WHERE {where}", params).fetchall()
     return [dict(row) for row in rows]
+

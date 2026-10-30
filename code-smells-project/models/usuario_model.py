@@ -36,3 +36,4 @@ def atualizar_senha(usuario_id, senha_hash):
     db = get_db()
     db.execute("UPDATE usuarios SET senha = ? WHERE id = ?", (senha_hash, usuario_id))
     db.commit()
+

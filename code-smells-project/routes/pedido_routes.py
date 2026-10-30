@@ -30,3 +30,4 @@ def atualizar_status_pedido(pedido_id):
 @pedido_bp.get("/relatorios/vendas")
 def relatorio_vendas():
     return jsonify({"dados": relatorio_controller.relatorio_vendas(), "sucesso": True}), 200
+

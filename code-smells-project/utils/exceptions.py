@@ -22,3 +22,4 @@ class ForbiddenError(AppError):
 
 class NotFoundError(AppError):
     status = 404
+

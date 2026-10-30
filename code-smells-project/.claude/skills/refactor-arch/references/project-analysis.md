@@ -82,3 +82,4 @@ Classifique:
 
 Extraia todas as rotas (método + path) do código de roteamento e de arquivos de exemplo
 (`api.http`, README, coleções). Monte uma lista numerada: ela é a base do baseline e da validação final.
+

@@ -1,34 +1,43 @@
+import logging
+
 from flask import Flask
 from flask_cors import CORS
+
+from config.settings import Settings
 from database import db
-from routes.task_routes import task_bp
-from routes.user_routes import user_bp
-from routes.report_routes import report_bp
-import os, sys, json, datetime
+from middlewares.error_handler import register_error_handlers
+from routes import register_routes
+from utils.helpers import format_date, utcnow
 
-app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'super-secret-key-123'
+def create_app():
+    """Composition root: monta configuração, ORM, middlewares e rotas."""
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 
-CORS(app)
-db.init_app(app)
+    flask_app = Flask(__name__)
+    flask_app.config.from_object(Settings)
 
-app.register_blueprint(task_bp)
-app.register_blueprint(user_bp)
-app.register_blueprint(report_bp)
+    CORS(flask_app)
+    db.init_app(flask_app)
 
-@app.route('/health')
-def health():
-    return {'status': 'ok', 'timestamp': str(datetime.datetime.now())}
+    register_error_handlers(flask_app)
+    register_routes(flask_app)
 
-@app.route('/')
-def index():
-    return {'message': 'Task Manager API', 'version': '1.0'}
+    @flask_app.route("/health")
+    def health():
+        return {"status": "ok", "timestamp": format_date(utcnow())}
 
-with app.app_context():
-    db.create_all()
+    @flask_app.route("/")
+    def index():
+        return {"message": "Task Manager API", "version": "1.0"}
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    with flask_app.app_context():
+        db.create_all()
+
+    return flask_app
+
+
+app = create_app()
+
+if __name__ == "__main__":
+    app.run(debug=Settings.DEBUG, host=Settings.HOST, port=Settings.PORT)
