@@ -13,3 +13,4 @@ class PaymentModel {
 }
 
 module.exports = PaymentModel;
+

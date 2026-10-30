@@ -85,12 +85,17 @@ A skill `refactor-arch` foi criada em `.claude/skills/refactor-arch/` dentro de 
 ```text
 .claude/skills/refactor-arch/
 ├── SKILL.md                               # Orquestrador de 3 fases (Análise → Auditoria com pausa → Refatoração + Validação)
+├── 01-project-analysis.md                 # Área 1 (raiz + espelhado em references/)
+├── 02-antipatterns-catalog.md             # Área 2 (raiz + espelhado em references/)
+├── 03-audit-report-template.md            # Área 3 (raiz + espelhado em references/)
+├── 04-mvc-guidelines.md                   # Área 4 (raiz + espelhado em references/)
+├── 05-refactoring-playbook.md             # Área 5 (raiz + espelhado em references/)
 └── references/
-    ├── project-analysis.md                # Área 1: Heurísticas de detecção de linguagem, framework, banco, domínio e arquitetura
-    ├── anti-patterns-catalog.md           # Área 2: Catálogo de 18 anti-patterns (CRITICAL a LOW) + tabela de APIs deprecated
-    ├── report-template.md                 # Área 3: Template estrito do relatório de auditoria da Fase 2
-    ├── mvc-guidelines.md                  # Área 4: Regras da arquitetura MVC alvo (camadas, dependências e responsabilidades)
-    └── refactoring-playbook.md            # Área 5: 18 padrões concretos de transformação Antes/Depois (Python e Node.js)
+    ├── project-analysis.md                # Heurísticas de detecção de linguagem, framework, banco, domínio e maturidade (1/5 a 5/5)
+    ├── anti-patterns-catalog.md           # Catálogo de 18 anti-patterns (CRITICAL a LOW) + tabelas de APIs deprecated por stack
+    ├── report-template.md                 # Template estrito do relatório de auditoria da Fase 2 + resumo da Fase 3
+    ├── mvc-guidelines.md                  # Regras da arquitetura MVC alvo (camadas, dependências e responsabilidades)
+    └── refactoring-playbook.md            # 18 padrões concretos de transformação Antes/Depois (Python e Node.js)
 ```
 
 - **Separação entre Fluxo e Conhecimento**: O `SKILL.md` define regras invioláveis (somente leitura nas Fases 1 e 2, citação obrigatória de `arquivo:linha` reais, preservação de contrato HTTP, pausa obrigatória na Fase 2 com `Phase 2 complete. Proceed with refactoring (Phase 3)? [y/n]`, e validação de boot + endpoints na Fase 3).
@@ -124,11 +129,11 @@ Incluímos **18 anti-patterns** distribuídos nas 4 severidades (superando o mí
 
 Os relatórios completos gerados na Fase 2 estão disponíveis na pasta [`reports/`](file:///Users/vinicius/Documents/mba-ia-refactor-projects-skill/reports):
 
-| Projeto | Stack Detectada | Arquivos Analisados | CRITICAL | HIGH | MEDIUM | LOW | Total de Findings | Relatório Completo |
-|---|---|---:|---:|---:|---:|---:|---:|---|
-| **1. `code-smells-project`** | Python 3 + Flask 3.1.1 (SQLite) | 4 (~780 LOC) | 5 | 3 | 4 | 4 | **16** | [reports/audit-project-1.md](file:///Users/vinicius/Documents/mba-ia-refactor-projects-skill/reports/audit-project-1.md) |
-| **2. `ecommerce-api-legacy`** | Node.js + Express 4.18.2 (SQLite) | 3 (~180 LOC) | 3 | 4 | 4 | 4 | **15** | [reports/audit-project-2.md](file:///Users/vinicius/Documents/mba-ia-refactor-projects-skill/reports/audit-project-2.md) |
-| **3. `task-manager-api`** | Python 3 + Flask 3.0.0 + SQLAlchemy | 11 (~1.083 LOC) | 2 | 3 | 5 | 4 | **14** | [reports/audit-project-3.md](file:///Users/vinicius/Documents/mba-ia-refactor-projects-skill/reports/audit-project-3.md) |
+| Projeto | Stack Detectada | Arquivos Analisados | Maturidade (Antes → Depois) | CRITICAL | HIGH | MEDIUM | LOW | Total de Findings | Relatório Completo |
+|---|---|---:|:---:|---:|---:|---:|---:|---:|---|
+| **1. `code-smells-project`** | Python 3 + Flask 3.1.1 (SQLite) | 4 (~780 LOC) | `2/5 → 4/5` | 5 | 3 | 4 | 4 | **16** | [reports/audit-project-1.md](file:///Users/vinicius/Documents/mba-ia-refactor-projects-skill/reports/audit-project-1.md) |
+| **2. `ecommerce-api-legacy`** | Node.js + Express 4.18.2 (SQLite) | 3 (~180 LOC) | `1/5 → 4/5` | 3 | 4 | 4 | 4 | **15** | [reports/audit-project-2.md](file:///Users/vinicius/Documents/mba-ia-refactor-projects-skill/reports/audit-project-2.md) |
+| **3. `task-manager-api`** | Python 3 + Flask 3.0.0 + SQLAlchemy | 11 (~1.083 LOC) | `2.5/5 → 4/5` | 2 | 3 | 5 | 4 | **14** | [reports/audit-project-3.md](file:///Users/vinicius/Documents/mba-ia-refactor-projects-skill/reports/audit-project-3.md) |
 
 ---
 

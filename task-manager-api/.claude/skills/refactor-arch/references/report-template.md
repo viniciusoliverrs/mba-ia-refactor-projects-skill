@@ -48,6 +48,8 @@ Phase 2 complete. Proceed with refactoring (Phase 3)? [y/n]
 4. `Description` cita nomes reais (funções, variáveis, valores) — nunca texto genérico.
 5. `Recommendation` diz **o que fazer** e em qual camada MVC o código deve parar.
 6. O relatório termina sempre com a pergunta de confirmação; a skill **para** até receber a resposta.
-7. Ao salvar em `reports/audit-project-N.md`, salve o relatório completo (sem a linha de confirmação é aceitável,
-   mas mantenha a estrutura).
+7. Ao salvar em `reports/audit-project-N.md` (e `reports/audit-report.md`), inclua também:
+   - **Tabela de Resumo Executivo** (Arquivos, LOC, Total de findings, contagem por severidade e Nível de maturidade atual `X/5` → `4/5`)
+   - **Blocos de Evidência de Código** reais e **Tabela de APIs Deprecated**
+   - **Tabela de Prioridade de Refatoração** e, após concluir a Fase 3, a seção **FASE 3: REFACTORING COMPLETE** com comparativo Antes/Depois e lista de endpoints validados.
 

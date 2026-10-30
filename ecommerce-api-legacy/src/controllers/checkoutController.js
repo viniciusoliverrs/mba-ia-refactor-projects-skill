@@ -1,4 +1,4 @@
-const { APPROVED_CARD_PREFIX, EMAIL_REGEX, PAYMENT_STATUS } = require('../config/constants');
+const { APPROVED_CARD_PREFIX, CARD_DIGITS_REGEX, EMAIL_REGEX, PAYMENT_STATUS } = require('../config/constants');
 const { hashPassword } = require('../utils/crypto');
 const { NotFoundError, ValidationError } = require('../utils/errors');
 const logger = require('../utils/logger');
@@ -35,12 +35,17 @@ class CheckoutController {
       throw new ValidationError('Curso inválido');
     }
 
+    const sanitizedCard = String(cardNumber).trim();
+    if (!CARD_DIGITS_REGEX.test(sanitizedCard)) {
+      throw new ValidationError('Formato de cartão inválido');
+    }
+
     return {
       userName: String(userName).trim(),
       email: email.trim(),
       password: password ? String(password) : null,
       courseId,
-      cardNumber: String(cardNumber).trim(),
+      cardNumber: sanitizedCard,
     };
   }
 
@@ -90,3 +95,4 @@ class CheckoutController {
 }
 
 module.exports = CheckoutController;
+

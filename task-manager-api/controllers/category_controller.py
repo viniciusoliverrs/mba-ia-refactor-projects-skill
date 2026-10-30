@@ -97,3 +97,4 @@ def delete_category(cat_id):
         db.session.rollback()
         logger.error("Erro ao deletar categoria %s: %s", cat_id, exc)
         raise AppError("Erro ao deletar") from exc
+

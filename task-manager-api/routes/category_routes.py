@@ -24,3 +24,4 @@ def update_category(cat_id):
 def delete_category(cat_id):
     category_controller.delete_category(cat_id)
     return jsonify({"message": "Categoria deletada"}), 200
+

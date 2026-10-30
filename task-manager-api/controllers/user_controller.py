@@ -195,3 +195,4 @@ def login(data):
         "user": user.to_dict(),
         "token": _generate_auth_token(user.id),
     }
+

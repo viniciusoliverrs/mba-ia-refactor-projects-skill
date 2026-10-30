@@ -7,3 +7,4 @@ function createCheckoutRoutes(checkoutController) {
 }
 
 module.exports = createCheckoutRoutes;
+

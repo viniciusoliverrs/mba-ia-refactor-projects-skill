@@ -7,3 +7,4 @@ function createUserRoutes(userController) {
 }
 
 module.exports = createUserRoutes;
+

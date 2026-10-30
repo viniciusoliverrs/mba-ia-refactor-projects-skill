@@ -9,6 +9,11 @@ class Settings:
     DB_PATH = os.environ.get("DB_PATH", "loja.db")
     HOST = os.environ.get("HOST", "127.0.0.1")
     PORT = int(os.environ.get("PORT", "5000"))
+    CORS_ORIGINS = [
+        origin.strip()
+        for origin in os.environ.get("CORS_ORIGINS", "http://localhost:3000,http://localhost:5000").split(",")
+        if origin.strip()
+    ]
     # Token exigido (header X-Admin-Token) para rotas administrativas; vazio = rotas desabilitadas
     ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "")
     VERSAO = "1.0.0"

@@ -65,14 +65,30 @@ Responda às perguntas, anotando os arquivos:
 
 Classifique:
 
-| Classificação | Critério |
-|---|---|
-| Monolítica sem camadas | Tudo em poucos arquivos; SQL/regra/rotas misturados |
-| God class | Uma classe/módulo concentra rotas + DB + negócio |
-| Parcialmente em camadas | Existem `models/` e `routes/`, mas lógica de negócio e queries nas rotas, sem controllers |
-| MVC adequado | Camadas separadas e com responsabilidades corretas |
+| Classificação | Maturidade | Critério |
+|---|---|---|
+| Monolítica total / God Class | **1/5** | Tudo em 1-3 arquivos; uma classe/módulo concentra rotas + DB + negócio |
+| Separação mínima | **2/5** | Arquivos `app + models + controllers` no mesmo nível, mas com SQL/regra misturados |
+| Parcialmente em camadas | **2.5/5 – 3/5** | Existem `models/` e `routes/`, mas lógica de negócio e queries vazam para as rotas, sem controllers |
+| MVC completo | **4/5** | Camadas `config`, `models`, `controllers`, `routes`, `middlewares` separadas e com responsabilidades corretas |
+| Clean / Hexagonal | **5/5** | Portas e adaptadores, inversão de dependência e testes automatizados por camada |
 
-## 6. Métricas
+## 6. Tabelas de Referência de APIs Deprecated por Framework/Versão
+
+Ao inspecionar os arquivos na Fase 1 e Fase 2, cruze com esta tabela:
+
+| Tecnologia / Versão | API / Padrão Deprecated | Substituto Moderno |
+|---|---|---|
+| **Python 3.12+** | `datetime.utcnow()` / `datetime.utcfromtimestamp()` | `datetime.now(timezone.utc)` / `datetime.fromtimestamp(ts, timezone.utc)` |
+| **SQLAlchemy 2.0+** | `Model.query.get(id)` / `Query.get()` | `db.session.get(Model, id)` |
+| **Flask 2.3+** | `@app.before_first_request` | Inicializar dentro de `with app.app_context():` no `create_app()` |
+| **Flask 2.2+** | `flask.json.JSONEncoder` / `JSON_SORT_KEYS` | `app.json` provider |
+| **Express 4.x** | `res.json(status, body)` / `res.send(status)` | `res.status(status).json(body)` / `res.sendStatus(status)` |
+| **Express 4.x** | `req.param('id')` / `app.del()` | `req.params.id`, `req.query`, `req.body` / `app.delete()` |
+| **Node.js / SQLite3** | Callbacks aninhados `(err, row) =>` / `new Buffer()` | `Promises` + `async/await` / `Buffer.from()` |
+| **Criptografia (Geral)** | `hashlib.md5()` / `sha1()` / Base64 para senhas | `werkzeug.security.generate_password_hash` / `crypto.scryptSync` / `bcrypt` |
+
+## 7. Métricas
 
 - **Source files**: arquivos de código de aplicação (exclua dependências, lockfiles, bancos, docs, seeds se forem scripts auxiliares — mencione-os se incluídos).
 - **LOC**: `wc -l` nos arquivos analisados.

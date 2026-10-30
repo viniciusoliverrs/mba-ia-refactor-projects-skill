@@ -26,3 +26,4 @@ class NotFoundError(AppError):
 
 class ConflictError(AppError):
     status = 409
+

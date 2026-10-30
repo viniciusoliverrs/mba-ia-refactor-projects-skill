@@ -15,7 +15,7 @@ def create_app():
 
     app = Flask(__name__)
     app.config.from_object(Settings)
-    CORS(app)
+    CORS(app, origins=Settings.CORS_ORIGINS)
 
     connection.init_app(app)
     register_error_handlers(app)

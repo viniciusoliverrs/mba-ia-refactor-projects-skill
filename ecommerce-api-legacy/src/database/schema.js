@@ -31,3 +31,4 @@ async function initDatabase(db) {
 module.exports = {
   initDatabase,
 };
+

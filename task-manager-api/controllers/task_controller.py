@@ -234,3 +234,4 @@ def get_task_stats():
         "overdue": overdue_count,
         "completion_rate": calculate_percentage(done, total),
     }
+

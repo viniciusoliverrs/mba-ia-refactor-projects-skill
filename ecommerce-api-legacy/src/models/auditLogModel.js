@@ -12,3 +12,4 @@ class AuditLogModel {
 }
 
 module.exports = AuditLogModel;
+

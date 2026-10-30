@@ -27,3 +27,4 @@ class CourseModel {
 }
 
 module.exports = CourseModel;
+

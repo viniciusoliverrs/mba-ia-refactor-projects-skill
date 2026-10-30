@@ -130,3 +130,4 @@ def get_user_report(user_id):
             "completion_rate": calculate_percentage(done, total),
         },
     }
+
