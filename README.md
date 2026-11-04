@@ -78,18 +78,13 @@ Antes de projetar a skill `refactor-arch`, realizamos a leitura integral de todo
 
 ## B) Construção da Skill
 
-A skill `refactor-arch` foi criada em `.claude/skills/refactor-arch/` dentro de cada um dos 3 projetos, utilizando o princípio de **Progressive Disclosure**: o arquivo principal `SKILL.md` atua como o prompt orquestrador das 3 fases sequenciais, enquanto o conhecimento profundo de domínio fica modularizado em 5 arquivos de referência em `references/`.
+A skill `refactor-arch` foi criada em `.claude/skills/refactor-arch/` dentro de cada um dos 3 projetos, utilizando o princípio de **Progressive Disclosure**: o arquivo principal `SKILL.md` atua como o prompt orquestrador das 3 fases sequenciais, enquanto o conhecimento profundo de domínio fica modularizado em 5 arquivos de referência em `references/` (sem cópias duplicadas).
 
 ### 1. Decisões de Design e Estrutura de Arquivos
 
 ```text
 .claude/skills/refactor-arch/
 ├── SKILL.md                               # Orquestrador de 3 fases (Análise → Auditoria com pausa → Refatoração + Validação)
-├── 01-project-analysis.md                 # Área 1 (raiz + espelhado em references/)
-├── 02-antipatterns-catalog.md             # Área 2 (raiz + espelhado em references/)
-├── 03-audit-report-template.md            # Área 3 (raiz + espelhado em references/)
-├── 04-mvc-guidelines.md                   # Área 4 (raiz + espelhado em references/)
-├── 05-refactoring-playbook.md             # Área 5 (raiz + espelhado em references/)
 └── references/
     ├── project-analysis.md                # Heurísticas de detecção de linguagem, framework, banco, domínio e maturidade (1/5 a 5/5)
     ├── anti-patterns-catalog.md           # Catálogo de 18 anti-patterns (CRITICAL a LOW) + tabelas de APIs deprecated por stack

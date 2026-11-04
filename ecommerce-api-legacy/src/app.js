@@ -12,6 +12,8 @@ const ReportController = require('./controllers/reportController');
 const UserController = require('./controllers/userController');
 const createApiRouter = require('./routes');
 const errorHandler = require('./middlewares/errorHandler');
+
+const { notFoundHandler } = errorHandler;
 const logger = require('./utils/logger');
 
 // Factory pura: recebe a conexão já pronta; não abre banco, não cria schema e não faz listen.
@@ -41,6 +43,7 @@ function createApp(db) {
   });
 
   app.use('/api', createApiRouter({ checkoutController, reportController, userController }));
+  app.use(notFoundHandler);
   app.use(errorHandler);
 
   return app;

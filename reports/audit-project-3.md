@@ -164,6 +164,12 @@ Correção: `create_app(config)` agora é uma factory pura (sem `create_all`, se
 | AP-07 | `DATABASE_URL=sqlite:////tmp/v/import.db python -W error::DeprecationWarning -c "import app, seed"` → arquivo **não** criado (no código anterior, `import app` criava o `.db`) | RESOLVED |
 | AP-04 | `GET /users/1` e `POST /login` não contêm `password` nem `fake-jwt-token` na resposta | RESOLVED |
 | Boot + endpoints | 11 GETs + `POST /login` + `POST /tasks` (200/201) após `seed.py` em banco novo, sob `-W error::DeprecationWarning` | RESOLVED |
-| Demais (AP-03, AP-06, AP-08, AP-10, AP-14, AP-18...) | Mantidos da 1ª execução; não reexecutados nesta rodada | NÃO REVALIDADO |
+| AP-01 | `SECRET_KEY` vem de `Settings` (env); `grep` sem `super-secret`/`senha123` no código | RESOLVED |
+| AP-10 | `GET /tasks` (10 tasks) → **1** query; `/users` → 1; `/categories` → 1; `/reports/summary` → 8 (constante, antes O(U+C)) | RESOLVED |
+| AP-08 | `DELETE /categories/1` → 6 tasks desvinculadas, 0 órfãs, 10 tasks preservadas; `DELETE /users/1` → 0 tasks órfãs | RESOLVED |
+| AP-11/AP-12 | `GET /tasks/search?priority=abc`/`user_id=zzz` → 400 (antes 500); `POST /tasks` sem JSON e `POST /users {}` → 400; `grep` sem `except:` | RESOLVED |
+| AP-14 | Suíte de 11 GETs + login + POST sob `-W error::DeprecationWarning` sem warnings; `grep` sem `Query.get(`/`datetime.utcnow()` | RESOLVED |
+| AP-16/AP-18 | `print()` do `seed.py` trocado por `logging` nesta rodada; `pyflakes` sem avisos exceto o `import models` intencional de `database.init_db` (registro de metadata, `noqa`); reexports de `models/__init__.py` via `__all__` | RESOLVED (corrigido nesta rodada) |
+| AP-03/06/13/15/17 | Verificação estrutural: rotas ≤ 41 linhas, controllers 100–237 linhas, regra de atraso em `Task.is_overdue()` (usada por 4 chamadas; única reexpressão restante é o filtro SQL de `/tasks/stats`, `task_controller.py:223`, por necessidade de agregação), constantes em `config/constants.py` (não são provas comportamentais) | RESOLVED (estrutural) |
 
-Findings resolved (revalidados por Impact nesta rodada): AP-07, AP-04. Os demais constam como resolvidos pela execução anterior.
+Findings resolved: 14/14 — todos revalidados por reprodução do Impact (comportamental) ou verificação estrutural, conforme a coluna Resultado.

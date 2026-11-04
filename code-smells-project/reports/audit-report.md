@@ -163,4 +163,11 @@ Correção (PB-07b): `create_app()` é factory pura; `init_db()` é chamado apen
 |---|---|---|
 | AP-07 | `DB_PATH=/tmp/w/p1.db python -W error::DeprecationWarning -c "import app"` → arquivo **não** criado | RESOLVED |
 | Boot + endpoints | `python app.py` → `/`, `/health`, `/produtos`, `/produtos/1`, `/usuarios`, `/pedidos`, `/relatorios/vendas`, `POST /login` = 200 (sem senha na resposta) | RESOLVED |
-| Demais | Mantidos da 1ª execução; não reexecutados | NÃO REVALIDADO |
+| AP-01 | `GET /health` não contém `SECRET_KEY`/segredo | RESOLVED |
+| AP-02 | `POST /login` com `' OR '1'='1' --` → 401; `GET /produtos/busca?q=' OR 1=1 --` → 0 resultados; f-strings de SQL só interpolam constantes (colunas/tabelas fixas), valores sempre via `?` | RESOLVED |
+| AP-04 | `GET /usuarios` sem campo `senha`; banco guarda `scrypt:...` | RESOLVED |
+| AP-05 | `POST /admin/query` → 404; `POST /admin/reset-db` sem token → 403 | RESOLVED |
+| AP-08 | Pedido com 2º item sem estoque → 400, **0** pedidos criados e estoque do 1º item intacto; cancelamento devolve estoque | RESOLVED |
+| AP-10 | `GET /pedidos` com 4 pedidos → **1** query (antes 1+P+I) | RESOLVED |
+| AP-11/AP-12 | JSON inválido → 400 `Dados inválidos` (sem `str(e)`); `POST /produtos {nome:123}`, `POST /pedidos {}`, `POST /login {}` → 400 | RESOLVED |
+| AP-03/06/07/13/15/16/17/18 | Verificação estrutural: `grep` sem `print(`/`global`/SQL em routes/controllers; `pyflakes` sem imports/variáveis não usados; maior arquivo 105 linhas; constantes em `config/constants.py` (não são provas comportamentais) | RESOLVED (estrutural) |

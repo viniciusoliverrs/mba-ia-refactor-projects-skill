@@ -13,11 +13,11 @@ Nunca assuma a stack — detecte-a na Fase 1.
 
 | Fase | Arquivo de Referência | Conteúdo |
 |---|---|---|
-| 1 | [01-project-analysis.md](references/project-analysis.md) | Heurísticas de detecção de linguagem, framework, banco, domínio, arquitetura e escala de maturidade (1–5) |
-| 2 | [02-antipatterns-catalog.md](references/anti-patterns-catalog.md) | Catálogo de 18 anti-patterns (CRITICAL a LOW), sinais de detecção por linguagem e APIs deprecated |
-| 2 | [03-audit-report-template.md](references/report-template.md) | Formato padronizado do relatório de auditoria (bloco CLI + tabelas executivas e evidências) |
-| 3 | [04-mvc-guidelines.md](references/mvc-guidelines.md) | Regras do MVC alvo (Models, Views/Routes, Controllers, Config/.env.example, Middlewares) |
-| 3 | [05-refactoring-playbook.md](references/refactoring-playbook.md) | 18 transformações concretas Antes/Depois (Python/Flask e Node.js/Express) |
+| 1 | [project-analysis.md](references/project-analysis.md) | Heurísticas de detecção de linguagem, framework, banco, domínio, arquitetura e escala de maturidade (1–5) |
+| 2 | [anti-patterns-catalog.md](references/anti-patterns-catalog.md) | Catálogo de 18 anti-patterns (CRITICAL a LOW), sinais de detecção por linguagem e APIs deprecated |
+| 2 | [report-template.md](references/report-template.md) | Formato padronizado do relatório de auditoria (bloco CLI + tabelas executivas e evidências) |
+| 3 | [mvc-guidelines.md](references/mvc-guidelines.md) | Regras do MVC alvo (Models, Views/Routes, Controllers, Config/.env.example, Middlewares) |
+| 3 | [refactoring-playbook.md](references/refactoring-playbook.md) | 18 transformações concretas Antes/Depois (Python/Flask e Node.js/Express) |
 
 ## Regras Invioláveis
 
@@ -33,7 +33,7 @@ Nunca assuma a stack — detecte-a na Fase 1.
 
 ## FASE 1 — Análise do Projeto
 
-Objetivo: mapear completamente o projeto antes de qualquer julgamento. Siga [01-project-analysis.md](references/project-analysis.md).
+Objetivo: mapear completamente o projeto antes de qualquer julgamento. Siga [project-analysis.md](references/project-analysis.md).
 
 1. Liste os arquivos-fonte recursivamente (ignore `node_modules`, `venv`, `.venv`, `__pycache__`, `.git`, `*.db`, lockfiles).
 2. Detecte **linguagem**, **framework** (com versão), **dependências**, **banco de dados** (e método de acesso) e **tabelas/entidades**.
@@ -62,7 +62,7 @@ Entry point:   <arquivo>
 
 ## FASE 2 — Auditoria de Arquitetura
 
-Objetivo: cruzar o código com o catálogo e produzir o relatório completo. Siga [02-antipatterns-catalog.md](references/anti-patterns-catalog.md) e [03-audit-report-template.md](references/report-template.md).
+Objetivo: cruzar o código com o catálogo e produzir o relatório completo. Siga [anti-patterns-catalog.md](references/anti-patterns-catalog.md) e [report-template.md](references/report-template.md).
 
 1. Leia **todos** os arquivos-fonte por completo (com números de linha).
 2. Aplique os checks do catálogo (`AP-01` a `AP-18`). Verifique obrigatoriamente **APIs deprecated (`AP-14`)** conforme linguagem, framework e ORM detectados.
@@ -81,7 +81,7 @@ Aguarde a resposta do usuário. **Não modifique nenhum arquivo de código sem c
 
 ## FASE 3 — Refatoração para MVC e Validação
 
-Executar **somente após confirmação**. Siga [04-mvc-guidelines.md](references/mvc-guidelines.md) e [05-refactoring-playbook.md](references/refactoring-playbook.md).
+Executar **somente após confirmação**. Siga [mvc-guidelines.md](references/mvc-guidelines.md) e [refactoring-playbook.md](references/refactoring-playbook.md).
 
 1. **Baseline**: registre os endpoints originais (método, path, status code e contrato de resposta).
 2. **Planeje a estrutura MVC alvo** calibrada pela maturidade detectada na Fase 1:

@@ -163,4 +163,9 @@ Correção (PB-07b): sem singleton no módulo; `src/app.js::createApp(db)` é fa
 |---|---|---|
 | AP-07 | `DB_PATH=/tmp/w2/p2.db node -e "require('./src/app'); require('./src/database/connection')"` → arquivo **não** criado | RESOLVED |
 | Boot + endpoints | `npm start`: `/health` 200, `GET /api/admin/financial-report` 200, `POST /api/checkout` 200, `DELETE /api/users/1` 200 | RESOLVED |
-| Demais | Mantidos da 1ª execução; não reexecutados | NÃO REVALIDADO |
+| AP-01 | Checkout com cartão completo: nenhuma linha de log contém o PAN ou chaves; só `cardLast4` | RESOLVED |
+| AP-04 | Todos os hashes em `users.pass` no formato `salt(32 hex):scrypt(64 hex)` | RESOLVED |
+| AP-08 | Novo usuário sem senha → 400 e usuário **não** criado; cartão recusado → 400 e 0 matrículas novas; `DELETE /api/users/:id` → 0 matrículas e 0 pagamentos órfãos | RESOLVED |
+| AP-10 | `GET /api/admin/financial-report` com 5 matrículas → **1** query (antes 1+C+2E) | RESOLVED |
+| AP-11/AP-12 | Payload vazio / tipos inválidos / id `abc` → 400 JSON; **rota inexistente → 404 JSON** e **JSON malformado → 400** (ambos reproduziam resposta HTML/500 antes da correção em `errorHandler.js`) | RESOLVED (corrigido nesta rodada) |
+| AP-03/06/09/14/15/16/17/18 | Verificação estrutural: `grep` sem `console.log`, `badCrypto`, `globalCache`, `totalRevenue`, `self = this`; fluxo 100% `async/await`; controllers ≤ 98 linhas (não são provas comportamentais) | RESOLVED (estrutural) |
