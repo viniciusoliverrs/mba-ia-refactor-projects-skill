@@ -1,6 +1,6 @@
 const express = require('express');
 const settings = require('./config/settings');
-const { dbConnection } = require('./database/connection');
+const { DatabaseConnection } = require('./database/connection');
 const { initDatabase } = require('./database/schema');
 const UserModel = require('./models/userModel');
 const CourseModel = require('./models/courseModel');
@@ -14,9 +14,8 @@ const createApiRouter = require('./routes');
 const errorHandler = require('./middlewares/errorHandler');
 const logger = require('./utils/logger');
 
-async function createApp(db = dbConnection) {
-  await initDatabase(db);
-
+// Factory pura: recebe a conexão já pronta; não abre banco, não cria schema e não faz listen.
+function createApp(db) {
   const userModel = new UserModel(db);
   const courseModel = new CourseModel(db);
   const enrollmentModel = new EnrollmentModel(db);
@@ -48,8 +47,10 @@ async function createApp(db = dbConnection) {
 }
 
 if (require.main === module) {
-  createApp()
-    .then((app) => {
+  const db = new DatabaseConnection();
+  initDatabase(db)
+    .then(() => {
+      const app = createApp(db);
       app.listen(settings.port, () => {
         logger.info(`LMS API rodando na porta ${settings.port}`);
       });

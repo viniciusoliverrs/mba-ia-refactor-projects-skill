@@ -153,3 +153,14 @@ Findings resolved: 15/15 (3 CRITICAL, 4 HIGH, 4 MEDIUM, 4 LOW)
 Endpoints verified: 4/4 (/health, POST /api/checkout, GET /api/admin/financial-report, DELETE /api/users/:id)
 ================================
 ```
+
+### Revalidação por Impact (2ª execução da Fase 3)
+
+Na 1ª execução, `src/database/connection.js` exportava `dbConnection = new DatabaseConnection()` (abre o SQLite no `require`) e `createApp()` criava o schema dentro da factory (AP-07 não estava de fato resolvido: conexão global criada no import).
+Correção (PB-07b): sem singleton no módulo; `src/app.js::createApp(db)` é factory pura; `new DatabaseConnection()` e `initDatabase(db)` ocorrem só sob `require.main === module`.
+
+| Finding | Verificação | Resultado |
+|---|---|---|
+| AP-07 | `DB_PATH=/tmp/w2/p2.db node -e "require('./src/app'); require('./src/database/connection')"` → arquivo **não** criado | RESOLVED |
+| Boot + endpoints | `npm start`: `/health` 200, `GET /api/admin/financial-report` 200, `POST /api/checkout` 200, `DELETE /api/users/1` 200 | RESOLVED |
+| Demais | Mantidos da 1ª execução; não reexecutados | NÃO REVALIDADO |

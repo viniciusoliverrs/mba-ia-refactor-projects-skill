@@ -97,5 +97,8 @@ Executar **somente após confirmação**. Siga [04-mvc-guidelines.md](references
 4. **Validação Obrigatória**:
    - Verifique que a aplicação inicia sem erros e sem `DeprecationWarning`.
    - Teste **todos** os endpoints originais e confirme status codes e payloads.
-   - Verifique que restam **zero** anti-patterns `CRITICAL` ou `HIGH`.
+   - **Reproduza o `Impact` de cada finding** (não basta "o código foi alterado"): para cada finding do relatório, escreva um comando/teste que exercite exatamente o cenário descrito em `Impact` e rode-o **contra o código refatorado**. Exemplos: AP-07 → `DATABASE_URL=sqlite:////tmp/x.db python -c "import app; import seed"` e confirme que `/tmp/x.db` **não** foi criado; SQL injection → payload malicioso não altera a query; senha exposta → campo ausente na resposta; N+1 → contagem de queries por request.
+   - Marque um finding como **resolvido somente se o Impact não se reproduzir mais**. Se o cenário ainda ocorrer (mesmo que parcialmente, ou em outro arquivo/script como `seed.py`), o finding é **PARTIAL/OPEN**: corrija e revalide, ou liste-o explicitamente como pendente. Proibido declarar `N/N` por inspeção visual ou por existir o refactor.
+   - Verifique que restam **zero** anti-patterns `CRITICAL` ou `HIGH` — confirmado pela reprodução acima, não pela troca de nomes/estrutura.
+   - No resumo final, inclua a tabela `Finding → comando de verificação → resultado (RESOLVED/PARTIAL/OPEN)`; `Findings resolved: X/N` conta apenas os RESOLVED.
 5. **Imprima o resumo final** (`PHASE 3: REFACTORING COMPLETE`) e atualize o relatório com a seção pós-refatoração.

@@ -20,9 +20,6 @@ def close_db(_exc=None):
 
 
 def init_app(app):
-    from database.schema import init_db
-
+    """Apenas registra o teardown da conexão. A criação do schema é explícita (`database.schema.init_db`)."""
     app.teardown_appcontext(close_db)
-    with app.app_context():
-        init_db()
 

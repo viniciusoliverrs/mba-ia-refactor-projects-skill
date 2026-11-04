@@ -146,9 +146,24 @@ PHASE 3: REFACTORING COMPLETE
 ================================
 Architecture: Partial Layers / Fat Routes (11 arquivos) -> Layered MVC + ORM (20 arquivos)
 Maturity:     2.5/5 -> 4/5
-Findings resolved: 14/14 (2 CRITICAL, 3 HIGH, 5 MEDIUM, 4 LOW)
+Findings resolved: 14/14 (2 CRITICAL, 3 HIGH, 5 MEDIUM, 4 LOW) — validado por reprodução do Impact (ver abaixo)
 Deprecated APIs fixed: 34/34 (16 Model.query.get -> db.session.get, 18 datetime.utcnow -> utcnow)
 Endpoints verified: 19/19 (Zero DeprecationWarning / LegacyAPIWarning sob -W error::DeprecationWarning)
 ================================
 ```
 
+### Revalidação por Impact (2ª execução da Fase 3)
+
+Na 1ª execução o AP-07 foi marcado como resolvido, mas `app = create_app()` ainda rodava no import e `create_app()` executava
+`db.create_all()`: `import seed` (via `from app import app`) criava/alterava `tasks.db`. O Impact não havia deixado de ocorrer.
+Correção: `create_app(config)` agora é uma factory pura (sem `create_all`, sem instância global); o schema é criado por
+`database.init_db(app)`, chamado só em `app.py::__main__` e em `seed.py::seed_data()` (PB-07b).
+
+| Finding | Verificação (Impact reproduzido contra o código refatorado) | Resultado |
+|---|---|---|
+| AP-07 | `DATABASE_URL=sqlite:////tmp/v/import.db python -W error::DeprecationWarning -c "import app, seed"` → arquivo **não** criado (no código anterior, `import app` criava o `.db`) | RESOLVED |
+| AP-04 | `GET /users/1` e `POST /login` não contêm `password` nem `fake-jwt-token` na resposta | RESOLVED |
+| Boot + endpoints | 11 GETs + `POST /login` + `POST /tasks` (200/201) após `seed.py` em banco novo, sob `-W error::DeprecationWarning` | RESOLVED |
+| Demais (AP-03, AP-06, AP-08, AP-10, AP-14, AP-18...) | Mantidos da 1ª execução; não reexecutados nesta rodada | NÃO REVALIDADO |
+
+Findings resolved (revalidados por Impact nesta rodada): AP-07, AP-04. Os demais constam como resolvidos pela execução anterior.

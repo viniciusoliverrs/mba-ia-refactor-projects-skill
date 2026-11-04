@@ -11,3 +11,5 @@ python app.py
 ```
 
 A aplicação sobe em `http://localhost:5000`. O `seed.py` popula o banco SQLite (`tasks.db`) com usuários, categorias e tasks de exemplo — **rode-o antes do primeiro boot**, caso contrário os endpoints vão retornar listas vazias.
+
+> Importar `app.py`/`seed.py` não toca o banco: o schema é criado por `init_db(app)`, chamado apenas por `python app.py` e `python seed.py`. Para outro servidor WSGI use a factory: `gunicorn "app:create_app()"` (rode o `seed.py` antes para criar o schema).

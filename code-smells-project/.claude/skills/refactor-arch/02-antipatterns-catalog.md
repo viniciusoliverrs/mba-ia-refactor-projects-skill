@@ -43,7 +43,8 @@ Cada entrada tem **ID**, **severidade**, **sinais de detecção acionáveis** e 
 
 ### AP-07 — Estado Global Mutável / Acoplamento sem DI  `HIGH`
 - **Sinais**: `global db_connection`, singleton de módulo, `let globalCache = {}` exportado e mutado, `totalRevenue` global; dependências criadas dentro das funções (`new sqlite3.Database` no construtor, `Modular.get`).
-- **Playbook**: PB-07.
+- **Sinais (efeito colateral no import)**: `app = create_app()` no nível do módulo; `db.create_all()`/`CREATE TABLE`/`init_db()` no escopo de módulo ou dentro da factory; `app.listen()`/`connect()` fora de `if __name__`/`require.main`; script auxiliar (`seed.py`, testes) que faz `from app import app`.
+- **Playbook**: PB-07 / PB-07b.
 
 ### AP-08 — Integridade de Dados / Falta de Transação  `HIGH`
 - **Sinais**: múltiplos writes dependentes sem transação (`INSERT pedido` + `INSERT itens` + `UPDATE estoque`); deleção que deixa órfãos (`DELETE users` sem tratar `enrollments/payments`); commit parcial; check-then-act de estoque sem atomicidade.

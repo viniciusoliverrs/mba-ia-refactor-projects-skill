@@ -52,10 +52,8 @@ class DatabaseConnection {
   }
 }
 
-const dbConnection = new DatabaseConnection();
-
+// Sem instância singleton no escopo do módulo: a conexão é criada pelo entry point (`new DatabaseConnection()`).
 module.exports = {
   DatabaseConnection,
-  dbConnection,
 };
 

@@ -154,3 +154,13 @@ Endpoints verified: 15/15 (contrato HTTP preservado; /admin/query RCE removido e
 ================================
 ```
 
+### Revalidação por Impact (2ª execução da Fase 3)
+
+Na 1ª execução, `app = create_app()` rodava no import e `connection.init_app()` executava `init_db()`: `import app` criava `loja.db` e inseria seed (AP-07 não estava de fato resolvido).
+Correção (PB-07b): `create_app()` é factory pura; `init_db()` é chamado apenas em `app.py::__main__`.
+
+| Finding | Verificação | Resultado |
+|---|---|---|
+| AP-07 | `DB_PATH=/tmp/w/p1.db python -W error::DeprecationWarning -c "import app"` → arquivo **não** criado | RESOLVED |
+| Boot + endpoints | `python app.py` → `/`, `/health`, `/produtos`, `/produtos/1`, `/usuarios`, `/pedidos`, `/relatorios/vendas`, `POST /login` = 200 (sem senha na resposta) | RESOLVED |
+| Demais | Mantidos da 1ª execução; não reexecutados | NÃO REVALIDADO |

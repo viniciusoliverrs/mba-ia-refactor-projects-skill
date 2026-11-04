@@ -54,6 +54,7 @@ queries das rotas para models/repositórios. Não renomeie por renomear.
 5. **Error handling centralizado**: um único handler converte exceções de domínio em `{erro: msg}` + status; exceções inesperadas viram 500 genérico (sem vazar `str(e)`/stacktrace) e são logadas.
 6. **Entry point claro**: `app.py`/`src/app.js` apenas monta a aplicação (factory `create_app()` quando fizer sentido).
 7. **Sem estado global mutável**: conexões/serviços criados no composition root e injetados (ou módulo com acesso encapsulado e thread-safe).
+   - **Import sem efeitos colaterais**: importar qualquer módulo (inclusive o entry point) não cria app, conexão, arquivo de banco, tabelas nem sobe servidor. O entry point expõe apenas a factory (`create_app()`/`createApp()`); a instância e a criação do schema (`db.create_all()`/`init_db()`) ficam atrás de `if __name__ == "__main__"` / `require.main === module`, de um comando CLI ou do seed. A factory é pura (só monta config, extensões, middlewares e rotas). Padrão completo em PB-07b.
 8. **Transações** em operações multi-etapa; integridade referencial em deleções.
 9. **Logging** via `logging` / logger configurável, não `print`/`console.log`.
 10. **Contrato preservado**: mesmas rotas, métodos, nomes de campos e status codes. Mudanças inevitáveis (ex.: remover senha/segredo das respostas) ficam documentadas.
@@ -67,6 +68,7 @@ queries das rotas para models/repositórios. Não renomeie por renomear.
 - [ ] Controllers concentram o fluxo e as regras
 - [ ] Error handling centralizado
 - [ ] Entry point claro (composition root)
+- [ ] Import sem efeitos colaterais: sem `app = create_app()`, `create_all()`/DDL, `listen()` ou conexão no escopo de módulo ou dentro da factory
 - [ ] Aplicação inicia sem erros
 - [ ] Endpoints originais respondem como antes (exceto correções de segurança documentadas)
 

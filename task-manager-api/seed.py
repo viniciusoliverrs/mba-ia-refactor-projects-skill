@@ -1,7 +1,8 @@
 """Script para popular o banco com dados iniciais."""
 from datetime import timedelta
 
-from app import app, db
+from app import create_app
+from database import db, init_db
 from models.category import Category
 from models.task import Task
 from models.user import User
@@ -9,6 +10,8 @@ from utils.helpers import utcnow
 
 
 def seed_data():
+    app = create_app()
+    init_db(app)
     with app.app_context():
         now = utcnow()
         Task.query.delete()

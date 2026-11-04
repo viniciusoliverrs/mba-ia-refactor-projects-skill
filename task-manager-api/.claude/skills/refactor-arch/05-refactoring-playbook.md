@@ -153,6 +153,58 @@ class CheckoutController { constructor({ userModel, courseModel, logger }) { ...
 // composition root monta e injeta; cache vira classe/serviço injetado ou é removido se não usado
 ```
 
+### PB-07b — Import sem efeitos colaterais: app e schema fora do escopo de módulo (AP-07)
+
+Importar um módulo (`import app`, `from app import ...`, `import seed`, testes) **nunca** pode abrir conexão, criar arquivo de banco,
+criar tabelas, semear dados ou subir servidor. Montar a app e criar o schema são ações **explícitas**.
+
+Antes:
+```python
+# app.py
+def create_app():
+    ...
+    with flask_app.app_context():
+        db.create_all()          # efeito colateral no banco
+    return flask_app
+
+app = create_app()               # roda no import -> seed.py (from app import app) já cria/toca tasks.db
+```
+```js
+const app = express(); db.serialize(() => db.run("CREATE TABLE ..."));   // schema criado no require()
+app.listen(3000);                                                       // servidor sobe no require()
+```
+Depois:
+```python
+# app.py  -> factory pura: só monta objetos, sem I/O de banco
+def create_app(config=Settings):
+    flask_app = Flask(__name__); flask_app.config.from_object(config)
+    db.init_app(flask_app); register_error_handlers(flask_app); register_routes(flask_app)
+    return flask_app             # SEM db.create_all(), SEM app = create_app() no módulo
+
+if __name__ == "__main__":       # somente execução direta cria app, schema e sobe servidor
+    app = create_app()
+    with app.app_context():
+        db.create_all()          # (ou init_db(): função explícita, idempotente)
+    app.run(host=Settings.HOST, port=Settings.PORT, debug=Settings.DEBUG)
+
+# seed.py -> cria sua própria app e inicializa o schema DENTRO da função
+def seed_data():
+    app = create_app()
+    with app.app_context():
+        db.create_all(); ...
+```
+```js
+// src/app.js -> exporta createApp(); schema em initDb() chamado só no entry point
+async function createApp() { /* monta e retorna app, sem listen */ }
+if (require.main === module) { initDb().then(createApp).then(app => app.listen(port)); }
+```
+Regras:
+1. Nenhum `app = create_app()`, `db.create_all()`, `init_db()`, `listen()` ou `connect()` no nível do módulo nem dentro da factory.
+2. Criação de schema/migração vive em função nomeada (`init_db`, `initDb`) chamada apenas pelo entry point (`__main__`/`require.main`), pelo seed ou por um comando CLI.
+3. Servidores WSGI usam a factory (`flask --app app:create_app run` / `gunicorn "app:create_app()"`), não uma instância global.
+4. Testes criam a app com config própria (ex.: `sqlite:///:memory:`) via `create_app(TestConfig)`.
+5. **Prova**: importar o módulo com `DATABASE_URL` apontando para um arquivo inexistente **não pode criá-lo** (ver validação da Fase 3).
+
 ## PB-08 — Transações e integridade referencial (AP-08)
 
 Antes:

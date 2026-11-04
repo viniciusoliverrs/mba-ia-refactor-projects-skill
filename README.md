@@ -119,6 +119,7 @@ Incluímos **18 anti-patterns** distribuídos nas 4 severidades (superando o mí
 
 - **Compatibilidade com dados existentes e seeds após troca de hash de senha**: Ao migrar senhas em texto puro (Projeto 1) e MD5 (Projeto 3) para `werkzeug.security.generate_password_hash`, atualizamos os seeds e adicionamos verificação híbrida com *re-hash* transparente no login caso exista um banco legado.
 - **Substituição de `datetime.utcnow()` sem quebrar comparações SQLite**: No Python 3.12+, `datetime.now(timezone.utc)` retorna um objeto *timezone-aware*, enquanto o SQLite retorna colunas `DateTime` *naive*, causando `TypeError: can't compare offset-naive and offset-aware datetimes`. Resolvemos isso no playbook (`PB-14`) e no helper `utcnow()` usando `datetime.now(timezone.utc).replace(tzinfo=None)`, eliminando 100% dos `DeprecationWarning` mantendo compatibilidade total com SQLite.
+- **Finding marcado como resolvido sem o Impact deixar de ocorrer (AP-07)**: na 1ª execução da Fase 3 o AP-07 foi declarado resolvido, mas `app = create_app()` e `db.create_all()` (projeto 3), `init_db()` no `init_app` (projeto 1) e o singleton `new DatabaseConnection()` (projeto 2) ainda disparavam efeitos colaterais no import. Resposta: novo padrão **PB-07b** (factory pura; app e schema só no entry point/seed), regra e checklist em `mvc-guidelines.md`, sinais no catálogo (AP-07) e, no `SKILL.md`, uma validação que exige **reproduzir o `Impact` de cada finding** e só marcar RESOLVED se ele não ocorrer mais (senão PARTIAL/OPEN). Os 3 projetos foram corrigidos e o relatório de cada um ganhou uma seção "Revalidação por Impact".
 - **Conflito entre módulo `models.py` e pacote `models/`**: No Projeto 1, documentamos no playbook a remoção explícita dos arquivos monolíticos antigos (`models.py`, `controllers.py`, `database.py`) ao criar os pacotes equivalentes para evitar shadowing de imports em Python.
 
 ---
@@ -217,7 +218,7 @@ ecommerce-api-legacy/src/                ecommerce-api-legacy/src/
 ANTES (Parcial, sem Controllers)         DEPOIS (Padrão MVC Completo)
 task-manager-api/                        task-manager-api/
 ├── app.py                               ├── app.py                        # Composition root (create_app)
-├── database.py                          ├── database.py                   # Instância SQLAlchemy
+├── database.py                          ├── database.py                   # Instância SQLAlchemy + init_db(app) explícito
 ├── seed.py                              ├── seed.py                       # Seed atualizado (sem datetime.utcnow)
 ├── models/                              ├── config/
 │   ├── user.py                          │   ├── constants.py              # Status, prioridades, limites
@@ -299,6 +300,7 @@ task-manager-api/                        task-manager-api/
 23 GET /relatorios/vendas -> 200 {"dados":{"desconto_aplicavel":0,"faturamento_bruto":479.7,"faturamento_liquido":479.7,"pedidos_aprovados":1,"pedidos_cancelados":0,"pedidos_pendentes":0,"ticket_medio":479.7,"total_pedidos":1},"sucesso":true}
 26 POST /admin/reset-db (sem token) -> 403 {"erro":"Acesso negado","sucesso":false}
 27 POST /admin/query (removido por segurança) -> 404
+✓ AP-07: `DB_PATH=/tmp/w/p1.db python -c "import app"` não cria o arquivo de banco (schema só em `python app.py`)
 ```
 
 #### 2. Logs de Validação — Projeto 2 (`ecommerce-api-legacy`)
@@ -315,6 +317,7 @@ task-manager-api/                        task-manager-api/
 09 DELETE /api/users/1 -> 200 {"msg":"Usuário e registros associados (matrículas e pagamentos) removidos com sucesso."}
 10 DELETE /api/users/999 -> 404 {"erro":"Usuário não encontrado"}
 11 GET /api/admin/financial-report -> 200 [{"course":"Clean Architecture","revenue":0,"students":[]},{"course":"Docker","revenue":497,"students":[{"paid":497,"student":"Guilherme"}]}]
+✓ AP-07: `require("./src/app")` e `require("./src/database/connection")` não abrem nem criam o banco (conexão/schema só sob `require.main === module`)
 ```
 
 #### 3. Logs de Validação — Projeto 3 (`task-manager-api`)
@@ -342,6 +345,7 @@ Seed concluído com sucesso!
 25 GET /reports/user/1 -> 200 {"statistics":{"cancelled":0,"completion_rate":0.0,"done":0,"high_priority":2,"in_progress":1,"overdue":2,"pending":3,"total_tasks":4},"user":{"email":"joao@email.com","id":1,"name":"João Silva"}}
 ✓ Security check passed: no password leaked in User.to_dict()
 ✓ Zero DeprecationWarnings / LegacyAPIWarnings (Python 3.13 + SQLAlchemy 2.x)
+✓ AP-07: `DATABASE_URL=sqlite:////tmp/v/import.db python -c "import app, seed"` não cria o arquivo de banco
 ```
 
 ---
